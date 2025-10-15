@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Clientes FORD</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background-color: #f4f4f4; color: #333; }
+        .container { max-width: 1200px; margin: auto; background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        h1 { color: #003366; text-align: center; margin-bottom: 30px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+        th { background-color: #003366; color: white; font-weight: bold; }
+        tr:nth-child(even) { background-color: #f9f9f9; }
+        .btn { display: inline-block; margin: 5px; padding: 8px 15px; text-decoration: none; color: white; border-radius: 5px; transition: background-color 0.3s ease; }
+        .ver { background-color: #17a2b8; }
+        .ver:hover { background-color: #138496; }
+        .editar { background-color: #007BFF; }
+        .editar:hover { background-color: #0056b3; }
+        .borrar { background-color: #DC3545; }
+        .borrar:hover { background-color: #c82333; }
+        .agregar { background-color: #28A745; margin: 20px 0; padding: 12px 20px; font-size: 1.1em; }
+        .agregar:hover { background-color: #218838; }
+        .no-clientes { text-align: center; color: #666; padding: 20px; font-style: italic; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Listado de Clientes FORD</h1>
+        <a href="{% url 'agregar_cliente' %}" class="btn agregar">Agregar Nuevo Cliente</a>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID Cliente</th>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Correo Electrónico</th>
+                    <th>Teléfono</th>
+                    <th>Fecha Registro</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for cliente in clientes %}
+                <tr>
+                    <td>{{ cliente.id_cliente }}</td>
+                    <td>{{ cliente.nombre }}</td>
+                    <td>{{ cliente.apellido }}</td>
+                    <td>{{ cliente.correo_electronico }}</td>
+                    <td>{{ cliente.telefono|default_if_none:"N/A" }}</td>
+                    <td>{{ cliente.fecha_registro|date:"d M Y H:i" }}</td>
+                    <td>
+                        <a href="{% url 'editar_cliente' cliente.id %}" class="btn editar">Editar</a>
+                        <a href="{% url 'borrar_cliente' cliente.id %}" class="btn borrar">Borrar</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="7" class="no-clientes">No hay clientes registrados en la base de datos.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
